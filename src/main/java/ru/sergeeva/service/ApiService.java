@@ -25,6 +25,12 @@ public class ApiService {
                 .collect(collectingAndThen(toList(), ImmutableList::copyOf));
     }
 
+    public List<City> findDistricts(String query, Integer limit, Boolean withParent) {
+        return apiExchangeClient.getDistricts(query, 5, true ).stream()
+                .map(this::toCity)
+                .collect(collectingAndThen(toList(), ImmutableList::copyOf));
+    }
+
     public SearchContext findContext(){
         return apiExchangeClient.getContext();
     }
@@ -33,7 +39,8 @@ public class ApiService {
         return new City(Long.valueOf(input.getId()),
                 input.getName(),
                 Integer.valueOf(input.getZip()),
-                input.getType());
+                input.getType(),
+                input.getParents());
     }
 
 }
