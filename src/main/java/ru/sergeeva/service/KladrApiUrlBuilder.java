@@ -1,11 +1,13 @@
 package ru.sergeeva.service;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 @Data
+@NoArgsConstructor
 public class KladrApiUrlBuilder {
     public static final String KLADR_API_BASE_URL = "http://kladr-api.ru/api.php";
     public static final String CONTENT_TYPE_REGION = "region";
@@ -22,10 +24,6 @@ public class KladrApiUrlBuilder {
     private String buildingId;
     private Integer limit;
     private Boolean withParent;
-
-    public KladrApiUrlBuilder() {
-
-    }
 
     public KladrApiUrlBuilder(String contentType, String query, Integer limit) {
         super();
@@ -52,7 +50,7 @@ public class KladrApiUrlBuilder {
         return this;
     }
 
-    public KladrApiUrlBuilder setLimit(int limit) {
+    public KladrApiUrlBuilder setLimit(Integer limit) {
         this.limit = limit;
         return this;
     }
@@ -71,13 +69,11 @@ public class KladrApiUrlBuilder {
         this.cityId = cityId;
         return this;
     }
-
-    public KladrApiUrlBuilder setRegionId(String regionId) {
+    public KladrApiUrlBuilder setregionId(String regionId) {
         this.regionId = regionId;
         return this;
     }
-
-    public KladrApiUrlBuilder setDistrictId(String districtId) {
+    public KladrApiUrlBuilder setDistrictId(String cityId) {
         this.districtId = districtId;
         return this;
     }
@@ -87,60 +83,58 @@ public class KladrApiUrlBuilder {
         return this;
     }
 
-    @Override
-    public String toString(){
-        return toString(true);
-    }
-
-    public String toString(boolean encodeQuery) {
-        if (this.contentType == null) {
-            throw new NullPointerException("contentType is required");
-        }
-        if (this.contentType.equals(CONTENT_TYPE_STREET) && this.cityId == null) {
-            throw new NullPointerException("cityId is required when contentType is street");
-        }
-        StringBuilder builder = new StringBuilder();
-        builder.append("&contentType=").append(this.contentType);
-        if (this.regionId != null) {
-            builder.append("&regionId=").append(this.regionId);
-        }
-        if (this.districtId != null) {
-            builder.append("&districtId=").append(this.districtId);
-        }
-        if (this.cityId != null) {
-            builder.append("&cityId=").append(this.cityId);
-        }
-        if (this.buildingId != null) {
-            builder.append("&buildingId=").append(this.buildingId);
-        }
-
-        if (this.withParent != null && this.withParent) {
-            builder.append("&withParent=1");
-        }
-        if (this.limit != null) {
-            builder.append("&limit=").append(this.limit);
-        }
-        if (query != null) {
-            if (encodeQuery) {
-                try {
-                    builder.append("&query=").append(encode(this.query));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                    builder.append("&query=").append(this.query);
-                }
-            } else {
-                builder.append("&query=").append(this.query);
-            }
-
-        }
-        return builder.toString();
-
-    }
     public String encode(String string) throws UnsupportedEncodingException {
         return encode(string, "UTF-8");
     }
 
     public String encode(String string, String encoding) throws UnsupportedEncodingException {
         return URLEncoder.encode(string, encoding);
+    }
+
+    @Override
+    public String toString() {
+        return toString(true);
+    }
+
+    public String toString(Boolean encoding) {
+        if (this.contentType == null) {
+            throw new NullPointerException("contentType is required");
+        }
+        if (this.contentType.equalsIgnoreCase(CONTENT_TYPE_STREET) && cityId == null) {
+            throw new NullPointerException("cityId is required when contentType is street");
+        }
+        StringBuilder builder = new StringBuilder();
+        builder.append("&contentType=").append(this.contentType);
+
+        if (regionId != null) {
+            builder.append("&regionId=").append(this.regionId);
+        }
+        if (districtId != null) {
+            builder.append("&district=").append(this.districtId);
+        }
+        if (cityId != null) {
+            builder.append("&cityId=").append(this.cityId);
+        }
+        if (buildingId != null) {
+            builder.append("&builderId=").append(this.buildingId);
+        }
+        if (this.withParent != null){
+            builder.append("&withParent=1");
+        }
+        if (this.limit != null) {
+            builder.append("&limit=").append(this.limit);
+        }
+        if (query != null) {
+            if (encoding) {
+                try {
+                    builder.append("&query=").append(encode(this.query));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    builder.append("&query=").append(this.query);
+                }
+            } else
+                builder.append("&query=").append(this.query);
+        }
+        return builder.toString();
     }
 }

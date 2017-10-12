@@ -19,8 +19,7 @@ import lombok.Data;
 
 import java.util.List;
 @Data
-public class CitiesDto {
-    private List<CityDto> result;
-    private SearchContext searchContext;
-
+public class KladrObjectsDto {
+    private List<KladrDto> result; // Массив полученных объектов заданного типа
+    private SearchContext searchContext;  // Объект с переданными серверу параметрами
 }

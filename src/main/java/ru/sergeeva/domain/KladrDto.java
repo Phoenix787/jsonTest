@@ -1,26 +1,22 @@
 package ru.sergeeva.domain;
 
 import lombok.Data;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
-
+ //объект заданного типа
 @Data
-public class CityDto {
+public class KladrDto {
     private String contentType;
     private String id;
     private String name;
     private String okato;
-    private List<CityDto> parents;
+    private List<KladrDto> parents;
     private String type;
     private String typeShort;
     private String zip;
 
 
-//    public CityDto(String id, String name, String zip, String type, String typeShort, String okato, List<CityDto> parents) {
+//    public KladrDto(String id, String name, String zip, String type, String typeShort, String okato, List<KladrDto> parents) {
 //        super();
 //        if (id != null){
 //            this.id = id;
@@ -39,7 +35,7 @@ public class CityDto {
 //        this.parents = parents;
 //    }
 //
-//    public CityDto(JSONObject kladrObject){
+//    public KladrDto(JSONObject kladrObject){
 //        super();
 //        try {
 //           this.id = kladrObject.getString("id");
@@ -57,13 +53,13 @@ public class CityDto {
 //        this.typeShort = kladrObject.optString("typeShort");
 //        this.okato = kladrObject.optString("okato");
 //
-//        List<CityDto> parents = new ArrayList<>();
+//        List<KladrDto> parents = new ArrayList<>();
 //        JSONArray parentArray = kladrObject.optJSONArray("parents");
 //        if (parentArray != null) {
 //            for (int i = 0; i < parentArray.length(); i++) {
 //                try {
 //                    JSONObject jsonObject = parentArray.getJSONObject(i);
-//                    CityDto cityDto = new CityDto(jsonObject);
+//                    KladrDto cityDto = new KladrDto(jsonObject);
 //                    parents.add(cityDto);
 //
 //                } catch (JSONException e) {

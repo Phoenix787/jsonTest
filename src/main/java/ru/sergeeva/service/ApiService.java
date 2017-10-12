@@ -8,7 +8,6 @@ import ru.sergeeva.domain.*;
 import ru.sergeeva.web.ApiExchangeClient;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
@@ -19,28 +18,17 @@ public class ApiService {
     @Autowired
     private ApiExchangeClient apiExchangeClient;
 
-    public List<City> findAll() {
-        return apiExchangeClient.getCities().stream()
+    public List<KladrObject> findAll() {
+        return apiExchangeClient.getStreetsByCityId("К", "7400000900000", 99).stream()
                 .map(this::toCity)
                 .collect(collectingAndThen(toList(), ImmutableList::copyOf));
     }
 
-    public List<City> findDistricts(String query, Integer limit, Boolean withParent) {
-        return apiExchangeClient.getDistricts(query, 5, true ).stream()
-                .map(this::toCity)
-                .collect(collectingAndThen(toList(), ImmutableList::copyOf));
-    }
-
-    public SearchContext findContext(){
-        return apiExchangeClient.getContext();
-    }
-
-    private City toCity(@NonNull CityDto input) {
-        return new City(Long.valueOf(input.getId()),
+    private KladrObject toCity(@NonNull KladrDto input) {
+        return new KladrObject(Long.valueOf(input.getId()),
                 input.getName(),
                 Integer.valueOf(input.getZip()),
-                input.getType(),
-                input.getParents());
+                input.getType(), input.getParents());
     }
 
 }
